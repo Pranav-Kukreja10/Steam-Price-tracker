@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Edition</title>
+    <style>
+        *, *::before, *::after {
+    box-sizing: border-box;
+}
+        html, body{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        body { 
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #0004ff 0%, #ee00f7 100%);
+            padding: 40px; 
+            background-attachment: fixed;
+            
+    }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        h1 { color: #ffffff; }
+        p{
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .option-card {
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(5px);
+            border-left: 5px solid #ffffff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            transition: transform 0.2s ease, background 0.25s ease;
+        }
+        .option-card:hover{
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.13);
+        }
+        
+        .info h3 { margin: 0 0 5px 0; font-size: 1.1em; color: white; }
+        .type-badge { background: rgba(255, 255, 255, 0.13); padding: 2px 8px; border-radius: 4px; font-size: 0.8em; color: white; }
+        .price { font-size: 1.2em; font-weight: bold; color: #01ff3c; margin-top: 5px; }
+
+        button {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            font-weight: bold;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.45);
+            transition: transform 0.25s ease;
+        }
+        button:hover { background-color: #0056b3; background: linear-gradient(135deg, #22D3EE, #4F46E5); transform: translateY(-2px); filter: brightness(1.05);}
+        .back-link { display: block; margin-top: 20px; color: rgb(236, 236, 236); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Found {{ items|length }} Options</h1>
+    <p>Which specific version do you want to track?</p>
+
+    {% for item in items %}
+    <div class="option-card">
+        <div class="info">
+            <h3>{{ item.name }}</h3>
+            <span class="type-badge">{{ item.type|upper }}</span>
+            <div class="price">₹{{ item.price }}</div>
+        </div>
+        
+        <form action="/save" method="POST">
+            <input type="hidden" name="name" value="{{ item.name }}">
+            <input type="hidden" name="price" value="{{ item.price }}">
+            <input type="hidden" name="url" value="{{ url }}">
+            <button type="submit">Track This</button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <a href="/" class="back-link">← Cancel and go back</a>
+</div>
+
+</body>
+</html>
