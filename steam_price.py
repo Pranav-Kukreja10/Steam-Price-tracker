@@ -19,7 +19,6 @@ def scrape_steam(url):
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-      
         "Accept-Language": "en-US,en;q=0.5" 
     }
 
@@ -38,7 +37,6 @@ def scrape_steam(url):
         print("CRITICAL ERROR: Still stuck at Age Gate!")
         return []
     
-    #Scraping Product Page
     purchase_blocks = soup.find_all("div", class_="game_area_purchase_game")
 
     for block in purchase_blocks:
@@ -51,11 +49,10 @@ def scrape_steam(url):
 
         name = title_tag.text.strip().replace("Buy ", "")
 
-        #Price Handling
         price_tag = block.find("div", class_="discount_final_price")
 
         if not price_tag:
-            price_tag = block.find("div", class_="game_purchase_pricex")
+            price_tag = block.find("div", class_="game_purchase_price")
 
         if price_tag:
             price_val = extract_number(price_tag.text)
@@ -67,7 +64,6 @@ def scrape_steam(url):
                 "type": item_type 
             })
 
-        #Scrape for DLCs and Bonus Contents
     dlc_rows = soup.find_all("div", class_="game_area_dlc_row")
     for row in dlc_rows:
         name_tag = row.find("span", class_="color_overlay")
